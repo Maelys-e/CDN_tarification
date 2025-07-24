@@ -239,25 +239,27 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
 
 int main()
 {
-  float Q1 = 1.2; // valeur arbitraire
-  float Q2 = 1.5; // valeur arbitraire
-
-  float p[13][30];
-
+  float Q1 = 1.2; // valeur arbitraire - qualité du service de CP1 sans passer par le serveur proche du CDN
+  float Q2 = 1.5; // valeur arbitraire - qualité du service de CP2 sans passer par le serveur proche du CDN
+  float qc = 0.6; // valeur arbitraire - coût de transfert pour le CDN d'une requête qui passe par son serveur proche
+  float qf = 1; // valur arbitraire - coût de transfert pour le CDN d'une requête qui ne passe pas par son serveur proche
+  
   struct Market market;
   market.A = 4; // valeur arbitraire
   market.V = 200; // valeur arbitraire
   market.alph = 0.8; // valeur expérimentale (entre 0.5 et 1, plus on est proche de 1 plus la population est hétérogène)
-  market.storage_cost = 0.6; // valeur arbitraire
-  float qc = 0.6;
-  float qf = 1;
+  market.storage_cost = 0.6; // valeur arbitraire - coût de stockage des données pour le CDN
   
   struct CDN cdn;
-  cdn.Qc = 2; // valeur arbitraire
+  cdn.Qc = 2; // valeur arbitraire - qualité de service d'une requête tranferrée par le serveur proche du CDN
   cdn.C = 3; // valeur arbitraire
-  cdn.storage_price = 0.5; // valeur arbitraire
-  cdn.request_price = 1; // valeur arbitraire à trouver
+  cdn.storage_price = 0.5; // valeur arbitraire - variable de décision - prix du stockage de données
+  cdn.request_price = 1; // valeur arbitraire - variable de décision - prix d'une requête
+  
   struct ToTrace results;
+
+  #define lissage 30
+  float p[13][lissage]; // tableau qui rassemble les résultats
   
   float Rmax = 0;
   float pmax = 0;
@@ -273,66 +275,20 @@ int main()
   float Q1max = 0;
   float Q2max = 0;
   
-  //market.A = 17;
-  for (int i = 0; i < 30; i++)
+  for (int i = 0; i < lissage; i++)
   {
     printf("%d\n", i);
-    market.V = 10.0+10*i;
+    market.V = 10.0+10*i;  // choisir n'importe quelle valeur et adapter les lignes 281 et 395 à la fenêtre souhaitée
     Rmax = 0;
     pmax = 0;
     gmax = 0;
     
-    /*
-    Cn = choix2(market, cdn, Q1, Q2, qc, qf);
-    struct Coeffs coeff;
-    if (Cn.has_1)
-        {
-            coeff.coeff_1 = 1;
-        }else{
-            coeff.coeff_1 = 0;
-        }
-        if (Cn.has_2)
-        {
-            coeff.coeff_2 = 1;
-        }else{
-            coeff.coeff_2 = 0;
-        }
-    struct Revenu revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
-    */
-    /*
-    cdn.storage_price = 5+0.4*i;
-    struct CN Cn;
-    results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-    printf("gCDN = %f - p = %f - R = %f\n", cdn.storage_price, results.Vn.p, results.Vn.r);
-    
-    p[0][i] = results.Vn.r;
-    p[1][i] = results.Vn.r1;
-    p[2][i] = results.Vn.r2;
-    p[3][i] = results.Vn.p1;
-    p[4][i] = results.Vn.p2;
-    p[5][i] = results.Vn.c1;
-    p[6][i] = results.Vn.c2;
-    p[7][i] = results.Vn.m1;
-    p[8][i] = results.Vn.m2;
-    p[9][i] = results.Vn.q1;
-    p[10][i] = results.Vn.q2;
-    p[11][i] = results.Vn.p;
-    */
-    
-    
+  
     //TOUR 1
     for (int j = 0; j < 31; j++)
     {
       cdn.storage_price = 0 + 10*j;
       results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-      /*
-      for (int k = 0; k < scope*precision; k++)
-      {
-        p[j][k] = results.Rn[k];
-      }
-      */
-      //p[0][j] = results.Vn.p;
-      //p[1][j] = results.Vn.r;
       printf("p = %f - V = %f - g = %f : R = %f\n", results.Vn.p, market.V, cdn.storage_price, results.Vn.r);
       
       if (results.Vn.r > Rmax)
@@ -351,10 +307,7 @@ int main()
         Q1max = results.Vn.q1;
         Q2max = results.Vn.q2;
       }
-      
-      //p[i][j] = Rmax;
     }
-    
     
     float start = gmax - 10/(1*1);
     //TOUR 2
@@ -362,14 +315,6 @@ int main()
     {
       cdn.storage_price = start + 2*j + 0;
       results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-      /*
-      for (int k = 0; k < scope*precision; k++)
-      {
-        p[j][k] = results.Rn[k];
-      }
-      */
-      //p[0][j] = results.Vn.p;
-      //p[1][j] = results.Vn.r;
       printf("p = %f - V = %f - g = %f : R = %f\n", results.Vn.p, market.V, cdn.storage_price, results.Vn.r);
       
       if (results.Vn.r > Rmax)
@@ -396,14 +341,6 @@ int main()
     {
       cdn.storage_price = start + 0.4*j + 0;
       results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-      /*
-      for (int k = 0; k < scope*precision; k++)
-      {
-        p[j][k] = results.Rn[k];
-      }
-      */
-      //p[0][j] = results.Vn.p;
-      //p[1][j] = results.Vn.r;
       printf("p = %f - V = %f - g = %f : R = %f\n", results.Vn.p, market.V, cdn.storage_price, results.Vn.r);
       
       if (results.Vn.r > Rmax)
@@ -424,8 +361,7 @@ int main()
       }
     }
     
-    
-    
+  
     p[0][i] = Rmax;
     p[1][i] = pmax;
     p[2][i] = gmax;
@@ -443,8 +379,7 @@ int main()
     
   }
   printf("###\nRevenu maximum = %f pour pCDN = %f et gCDN = %f\n###\n", Rmax, pmax, gmax);
-  
-  //printf("Si V = %f, A = %f, alpha = %f, gamma = %f \nAlors on a l'équilibre :\n p = %f, C1 = %f, C2 = %f, p1 = %f, p2 = %f\n", market.V, market.A, market.alph, market.storage_cost, results.Vn.p, results.Vn.c1, results.Vn.c2, results.Vn.p1, results.Vn.p2);
+
   
   FILE *f;
   char str[4454];
@@ -455,24 +390,14 @@ int main()
     exit(1);
   }
   
-  for (int i = 0; i < (int)(30); i++)
+  for (int i = 0; i < (int)(lissage); i++)
   {
     sprintf(str, "%f %f %f %f %f %f %f %f %f %f %f %f %f %f\n", 10.0+10*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i], p[7][i], p[8][i], p[9][i], p[10][i], p[11][i], p[12][i]);
     fputs(str, f);
   }
   
   fclose(f);
-  system("python3 tracer_selon_alpha.py data.txt");
-  
-  //for (int i = 0; i < (int)(sizeof(results.pn)/sizeof(results.pn[0])); i++)
-  //{
-    //sprintf(str, "%f %f %f %f %f %f %f %f\n", results.pn[i],results.Rn[i], results.c1n[i], results.c2n[i], results.p1n[i], results.p2n[i], results.r1n[i], results.r2n[i]);
-    //fputs(str, f);
-  //}
-  
-  //fclose(f);
-  
-  //system("python3 tracer_courbes.py data.txt");
+  system("python3 tracer_courbes.py data.txt");
   
   return 0;
 }
