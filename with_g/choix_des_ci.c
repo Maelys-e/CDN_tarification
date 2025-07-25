@@ -29,7 +29,6 @@ struct Revenu
 
 struct Revenu rcdn(float C1, float C2, float Qf1, float Qf2, struct Market market, struct CDN cdn, float p1, float p2, struct Coeffs coeff, float qc, float qf)
 {
-    //printf(" COEFFS %d, %d\n", coeff.coeff_1, coeff.coeff_2);
     float qf1 = qf;
     float qf2 = qf;
     float qc1 = qc;
@@ -118,18 +117,13 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     int maxI = 10*cdn.C+1;
     
     // TOUR 1
-    //printf("tour1\n");
-    //#pragma omp parallel for
     for (int ii = 0; ii < maxI; ii++)
     {
-        //printf("TOUR %d %f/ ", ii, ii*0.1);
-        //printf("%f %f\n", R, Rmax);
         C1 = ii*0.1;
         C2 = cdn.C - C1;
         coeff.coeff_1 = 0;
         coeff.coeff_2 = 0;
         result = nash2(C1, C2, Q1, Q2, market, cdn);
-        //printf("%f %f\n", R, Rmax);
         if (result.has_1)
         {
             coeff.coeff_1 = 1;
@@ -166,12 +160,9 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     }
     
     // TOUR 2
-    //printf("tour2\n");
-    //#pragma omp parallel for
     float start = Cn.c1 - (cdn.C/10)/2;
     for (int ii = 0; ii < maxI; ii++)
     {
-        //printf("TOUR %d %f/ ", ii, ii*0.01);
         C1 = start + ii*0.01;
         C2 = cdn.C - C1;
         coeff.coeff_1 = 0;
@@ -191,10 +182,8 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
         }
         revenu = rcdn(C1, C2, Q1, Q2, market, cdn, result.value_1, result.value_2, coeff, qc, qf);
         R = revenu.rev;
-        //printf("%d\n", ii);
         if (R > Rmax)
         {
-            //printf("Mise à jour");
             Rmax = R;
             Cn.has_1 = result.has_1;
             Cn.c1 = C1;
@@ -212,12 +201,9 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     }
     
     // TOUR 3
-    //printf("tour3\n");
-    //#pragma omp parallel for
     start = Cn.c1 - (cdn.C/100)/2;
     for (int ii = 0; ii < maxI; ii++)
     {
-        //printf("TOUR %d %f/ ", ii, ii*0.01);
         C1 = start + ii*0.001;
         C2 = cdn.C - C1;
         coeff.coeff_1 = 0;
@@ -237,7 +223,6 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
         }
         revenu = rcdn(C1, C2, Q1, Q2, market, cdn, result.value_1, result.value_2, coeff, qc, qf);
         R = revenu.rev;
-        //printf("%d\n", ii);
         if (R > Rmax)
         {
             //printf("Mise à jour");
