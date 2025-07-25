@@ -62,7 +62,6 @@ struct CPtuple
 
 struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct CDN cdn) 
 {
-  //printf("request price = %f ", request_price);
     double R;
     float pk = 0;
     double Max = 0;
@@ -141,9 +140,6 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
     tab.has_1 = coeff;
     tab.m1 = mmax;
     tab.q1 = qmax;
-    //float* tab = (float*)malloc(2*sizeof(float));
-    //*tab = {pk, R};
-    //printf("real p = %f & revenu = %f / ", pmax, Max);
     return(tab);
 }
 
@@ -157,105 +153,6 @@ struct Nash
   double rCP2;
 };
   
-/*
-struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, struct CDN cdn)
-{
-    //printf("nash2\n");
-    float p1 = 1;
-    //float p1_last = 1;
-    //float p1_before;
-    float p1_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-    float p2 = 1;
-    //float p2_last = 1;
-    //float p2_before;
-    float p2_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-    struct CPtuple tab;
-    float Ci[3] = {0, C1, C2};
-    float Qfi[3] = {0, Q1, Q2};
-    int n = 1;
-    float S;
-    /-*
-    while (n)
-    {
-        for (int i = 19; i > 0; i--)
-        {
-          p2_before[i] = p2_before[i-1];
-        }
-        p2_before[0] = p2;
-        for (int i = 19; i > 0; i--)
-        {
-          p1_before[i] = p1_before[i-1];
-        }
-        p1_before[0] = p1;
-        
-        //p1_before = p1_last;
-        //p2_before = p2_last;
-        //p1_last = p1;
-        //p2_last = p2;
-        //printf("TOUR %d\n", i+1);
-        //printf("(p1, p2) = (%f,%f)\n", p1, p2);
-        tab = maxrcp(p1, Ci, Qfi, market, cdn, 2);
-        p2 = tab.pk;
-        tab = maxrcp(p2, Ci, Qfi, market, cdn, 1);
-        p1 = tab.pk;
-        //printf("(p1, p2) = (%f,%f) - C = %f - p = %f\n", p1, p2, Ci[1], cdn.request_price);
-        
-        for (int j = 0; j < 20; j++)
-        {
-          if (round(fmaxf(p1 - p1_before[j], p1_before[j]-p1)*1000)/1000 < 0.01 && round(fmaxf(p2 - p2_before[j], p2_before[j]-p2)*1000)/1000 < 0.01) // test au centième près
-          {
-            //printf("%d\n", j);
-            n = 0;
-            S = 0;
-            for (int k = 0; k < j+1; k++)
-            {
-              S += p1_before[k];
-            }
-            p1 = round((S/(j+1))*1000)/1000;
-            S = 0;
-            for (int k = 0; k < j+1; k++)
-            {
-              S += p2_before[k];
-            }
-            p2 = round((S/(j+1)) * 1000)/1000;
-            break;
-          }
-        }
-        
-        //if ((round(fmaxf(p1 - p1_last, p1_last-p1)*10000)/10000 < 0.002 && round(fmaxf(p2 - p2_last, p2_last-p2)*10000)/10000 < 0.002)||(round(fmaxf(p1 - p1_before, p1_before-p1)*10000)/10000 < 0.002 && round(fmaxf(p2 - p2_before, p2_before-p2)*10000)/10000 < 0.002))
-        //{
-          //n = 0;
-        //}
-    }
-    *-/
-    //print("nash", p1, p2)
-    struct Nash values;
-    //printf("(p1,p2) = (%f,%f)", p1, p2);
-    //printf("(p1, p2) = (%f,%f) - C = %f - p = %f\n", p1, p2, Ci[1], cdn.request_price);
-    values.rCP1 = rcp(p1, p2, Ci, Qfi, market, cdn, 1);
-    values.rCP2 = rcp(p2, p1, Ci, Qfi, market, cdn, 2);
-    float SR;
-    SR = 0; // seuil de rentabilité (optionnel, mettre à 0 si on ne s'en sert pas)
-    if (p1 != 0 && values.rCP1 > SR) // si le CP1 n'est pas rentable
-    {
-        values.has_1 = true;
-        values.value_1 = p1;
-    }else{
-        values.has_1 = false;
-        values.value_1 = 0;
-    }
-    if (p2 != 0 && values.rCP2 > SR) // si le CP2 n'est pas rentable
-    {
-        values.has_2 = true;
-        values.value_2 = p2;
-    }else{
-        values.has_2 = false;
-        values.value_2 = 0;
-    }
-    //printf("before (%d, %d)", values.has_1, values.has_2);
-    return values;
-}
-*/
     
 /*
 int main()
@@ -292,9 +189,6 @@ int main()
         
     for (int i = 0; i < (int)(301); i++)
     {
-      //float pi = i*0.1;
-      //struct CPtuple tab1 = maxrcp(pi, Cis, Qfi, market, cdn, 1);
-      //struct CPtuple tab2 = maxrcp(pi, Cis, Qfi, market, cdn, 2);
       float pa = i*0.1;
       float pb = 12;
       float R = rcp(pa, pb, Cir, Qfi, market, cdn, 1);
