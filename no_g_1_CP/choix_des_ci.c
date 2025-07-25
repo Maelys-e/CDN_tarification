@@ -21,7 +21,6 @@ struct Revenu
 
 struct Revenu rcdn(float C1, float Qf1, struct Market market, struct CDN cdn, float p1, int coeff, float qc, float qf)
 {
-    //printf(" COEFFS %d, %d\n", coeff.coeff_1, coeff.coeff_2);
     float qf1 = qf;
     float qc1 = qc;
     float bet = 1-market.alph;
@@ -57,7 +56,6 @@ struct CN
 
 struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float qf)
 {
-    //printf("choix2");
     double Rmax;
     Rmax = 0;
     struct CN Cn;
@@ -146,7 +144,6 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
         R = revenu.rev;
         if (R > Rmax)
         {
-            //printf("Mise à jour");
             Rmax = R;
             Cn.has_1 = result.has_1;
             Cn.c1 = C1;
@@ -157,7 +154,6 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
         }
     }
     
-    //printf("end\n");
     return Cn;
 }
 
@@ -172,7 +168,6 @@ int main()
     market.A = 5; // valeur arbitraire
     market.V = 200; // valeur arbitraire
     market.alph = 0.9; // valeur expérimentale (entre 0.5 et 1, plus on est proche de 1 plus la population est hétérogène)
-    //market.storage_cost = 0.6; // valeur arbitraire
   
     struct CDN cdn;
     cdn.Qc = 80; // valeur arbitraire
@@ -192,8 +187,7 @@ int main()
       printf("Erreur lors de l'ouverture d'un fichier");
       exit(1);
     }
-    
-    //float Qfi[3] = {0, Q1};     
+       
     float C1;
     int coeff;
     struct CPtuple result;
@@ -201,12 +195,10 @@ int main()
     double r1;
     float m1;
     struct Revenu revenu;
-    //float p[6][301];
         
    
     for (int i = 0; i < (int)(301); i++)
     {
-      //printf("%d\n", i);
       C1 = i*0.01;
       coeff = 0;
       result = maxrcp(cdn.request_price, C1, Q1, market, cdn);
