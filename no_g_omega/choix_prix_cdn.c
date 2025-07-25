@@ -68,12 +68,10 @@ struct ToTrace choix_prix(struct Market market, struct CDN cdn, float Q1, float 
         {
             coeff.coeff_2 = 0;
         }
-        printf("coeffs : %d %d\n", coeff.coeff_1, coeff.coeff_2);
         revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
-            //printf("Mise à jour\n");
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
@@ -132,12 +130,10 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         {
             coeff.coeff_2 = 0;
         }
-        //printf("coeffs : %d %d\n", coeff.coeff_1, coeff.coeff_2);
         revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
-            //printf("Mise à jour\n");
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
@@ -172,12 +168,10 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         {
             coeff.coeff_2 = 0;
         }
-        //printf("coeffs : %d %d\n", coeff.coeff_1, coeff.coeff_2);
         revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
-            //printf("Mise à jour\n");
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
@@ -212,12 +206,10 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         {
             coeff.coeff_2 = 0;
         }
-        //printf("coeffs : %d %d\n", coeff.coeff_1, coeff.coeff_2);
         revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
-            //printf("Mise à jour\n");
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
@@ -248,7 +240,6 @@ int main()
   market.A = 5; // valeur arbitraire
   market.V = 200; // valeur arbitraire
   market.alph = 0.9; // valeur expérimentale (entre 0.5 et 1, plus on est proche de 1 plus la population est hétérogène)
-  //market.storage_cost = 0.6; // valeur arbitraire
   market.omeg = 0.5;
   float qc = 0.6;
   float qf = 1;
@@ -279,106 +270,7 @@ int main()
     Rmax = 0;
     pmax = 0;
     gmax = 0;
-  /*
-    cdn.request_price = 0.5*i;
-    struct CN Cn;
-    Cn = choix2(market, cdn, Q1, Q2, qc, qf);
-    struct Coeffs coeff;
-    if (Cn.has_1)
-        {
-            coeff.coeff_1 = 1;
-        }else{
-            coeff.coeff_1 = 0;
-        }
-        if (Cn.has_2)
-        {
-            coeff.coeff_2 = 1;
-        }else{
-            coeff.coeff_2 = 0;
-        }
-    struct Revenu revenu = rcdn(Cn.c1, Cn.c2, Q1, Q2, market, cdn, Cn.p1, Cn.p2, coeff, qc, qf);
-    printf("p = %f - R = %f\n", cdn.request_price, revenu.rev);
-    p[0][i] = revenu.rev;
-    p[1][i] = 10*Cn.c1;
-    p[2][i] = 10*Cn.c2;
-    p[3][i] = Cn.rcp1;
-    p[4][i] = Cn.rcp2;
-    p[5][i] = 100*Cn.m1;
-    p[6][i] = 100*Cn.m2;
-    p[7][i] = Cn.p1;
-    p[8][i] = Cn.p2;
-    */
-    
-    /*
-    //TOUR 1
-    for (int j = 0; j < 1; j++)
-    {
-      //cdn.storage_price = 0 + 6*j;
-      results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-      //p[0][j] = results.Vn.p;
-      //p[1][j] = results.Vn.r;
-      printf("p = %f - A = %f - g = %f : R = %f\n", results.Vn.p, market.A, cdn.storage_price, results.Vn.r);
-      
-      if (results.Vn.r > Rmax)
-      {
-        gmax = cdn.storage_price;
-        pmax = results.Vn.p;
-        Rmax = results.Vn.r;
-        pc1max = results.Vn.p1;
-        Rc1max = results.Vn.r1;
-        pc2max = results.Vn.p2;
-        Rc2max = results.Vn.r2;
-        M1max = results.Vn.m1;
-        M2max = results.Vn.m2;
-        C1max = results.Vn.c1;
-        C2max = results.Vn.c2;
-        Q1max = results.Vn.q1;
-        Q2max = results.Vn.q2;
-      }
-      
-      //p[i][j] = Rmax;
-    }
-    
-    float start = gmax - 30/(5*1);
-    //TOUR 2
-    for (int j = 0; j < 30; j++)
-    {
-      cdn.storage_price = start + 0.4*j + 0.4;
-      results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
-      //p[0][j] = results.Vn.p;
-      //p[1][j] = results.Vn.r;
-      printf("p = %f - A = %f - g = %f : R = %f\n", results.Vn.p, market.A, cdn.storage_price, results.Vn.r);
-      
-      if (results.Vn.r > Rmax)
-      {
-        pmax = results.Vn.p;
-        Rmax = results.Vn.r;
-        pc1max = results.Vn.p1;
-        Rc1max = results.Vn.r1;
-        pc2max = results.Vn.p2;
-        Rc2max = results.Vn.r2;
-        M1max = results.Vn.m1;
-        M2max = results.Vn.m2;
-        C1max = results.Vn.c1;
-        C2max = results.Vn.c2;
-        Q1max = results.Vn.q1;
-        Q2max = results.Vn.q2;
-      }
-    }
-    
-    p[0][i] = Rmax;
-    p[1][i] = pmax;
-    p[2][i] = Rc1max;
-    p[3][i] = pc1max;
-    p[4][i] = Rc2max;
-    p[5][i] = pc2max;
-    p[6][i] = M1max;
-    p[7][i] = M2max;
-    p[8][i] = C1max;
-    p[9][i] = C2max;
-    p[10][i] = Q1max;
-    p[11][i] = Q2max;
-    */
+ 
     
     results = choix_prix_opti(market, cdn, Q1, Q2, qc, qf);
     printf("p = %f - A = %f : R = %f\n", results.Vn.p, market.V, results.Vn.r);
@@ -397,7 +289,6 @@ int main()
     p[11][i] = results.Vn.q2;
     
   }
-  //printf("###\nRevenu maximum = %f pour pCDN = %f et gCDN = %f\n###\n", Rmax, pmax, gmax);
   
   FILE *f;
   char str[4454];
@@ -416,16 +307,6 @@ int main()
   
   fclose(f);
   system("python3 tracer_courbes.py data.txt");
-  
-  //for (int i = 0; i < (int)(sizeof(results.pn)/sizeof(results.pn[0])); i++)
-  //{
-    //sprintf(str, "%f %f %f %f %f %f %f %f\n", results.pn[i],results.Rn[i], results.c1n[i], results.c2n[i], results.p1n[i], results.p2n[i], results.r1n[i], results.r2n[i]);
-    //fputs(str, f);
-  //}
-  
-  //fclose(f);
-  
-  //system("python3 tracer_courbes.py data.txt");
   
   return 0;
 }
