@@ -20,27 +20,19 @@ struct Coeffs
 struct Revenu
 {
   double rev;
-  float m1;
-  float m2;
-  float q1;
-  float q2;
+  float m1; float m2;
+  float q1; float q2;
 };
 
 
 struct Revenu rcdn(float C1, float C2, float Qf1, float Qf2, struct Market market, struct CDN cdn, float p1, float p2, struct Coeffs coeff, float qc, float qf)
 {
-    float qf1 = qf;
-    float qf2 = qf;
-    float qc1 = qc;
-    float qc2 = qc;
     float bet = 1-market.alph;
-    float Da = pow(market.V, bet)/(bet);
-    float A1 = pow(C1/market.V, bet);
-    float A2 = pow(C2/market.V, bet);
-    float Q1 = cdn.Qc*A1 + Qf1*(1-A1);
-    float Q2 = cdn.Qc*A2 + Qf2*(1-A2);
-    float M1;
-    float M2;
+    float qf1 = qf;                     float qf2 = qf;
+    float qc1 = qc;                     float qc2 = qc;
+    float A1 = pow(C1/market.V, bet);   float A2 = pow(C2/market.V, bet);
+    float Q1 = cdn.Qc*A1 + Qf1*(1-A1);  float Q2 = cdn.Qc*A2 + Qf2*(1-A2);
+    float M1;                           float M2;
     if (coeff.coeff_1 != 0)
     {
         if (coeff.coeff_2 != 0)
@@ -63,31 +55,27 @@ struct Revenu rcdn(float C1, float C2, float Qf1, float Qf2, struct Market marke
     }else{
         M2 = 0;
     }
+    
+    float Da = pow(market.V, bet)/(bet);
     float Db = cdn.request_price * Da/market.A;
+    
     double R = market.A * (M1 * coeff.coeff_1 * (Db - (Da-pow(C1, bet)/bet)*qf1 - (pow(C1, bet)/bet)*qc1) + M2 * coeff.coeff_2 * (Db - (Da-pow(C2, bet)/bet)*qf2 - (pow(C2, bet)/bet)*qc2));
     struct Revenu revenu;
     revenu.rev = R;
-    revenu.m1 = M1;
-    revenu.m2 = M2;
-    revenu.q1 = Q1;
-    revenu.q2 = Q2;
+    revenu.m1 = M1;  revenu.m2 = M2;
+    revenu.q1 = Q1;  revenu.q2 = Q2;
+    
     return revenu;
 }
 
 struct CN
 {
-  bool has_1;
-  float c1;
-  float p1;
-  double rcp1;
-  float m1;
-  float q1;
-  bool has_2;
-  float c2;
-  float p2;
-  double rcp2;
-  float m2;
-  float q2;
+  bool has_1;   bool has_2;
+  float c1;     float c2;
+  float p1;     float p2;
+  double rcp1;  double rcp2;
+  float m1;     float m2;
+  float q1;     float q2;
 };
 
 struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float qc, float qf)
@@ -95,20 +83,14 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     double Rmax;
     Rmax = 0;
     struct CN Cn;
-    Cn.has_1 = false;
-    Cn.c1 = 0;
-    Cn.p1 = 0;
-    Cn.m1 = 0;
-    Cn.q1 = 0;
-    Cn.has_2 = false;
-    Cn.c2 = 0;
-    Cn.p2 = 0;
-    Cn.rcp1 = 0;
-    Cn.rcp2 = 0;
-    Cn.m2 = 0;
-    Cn.m1 = 0;
-    float C1;
-    float C2;
+    Cn.has_1 = false;    Cn.has_2 = false;
+    Cn.c1 = 0;    Cn.c2 = 0;
+    Cn.p1 = 0;    Cn.p2 = 0;
+    Cn.q1 = 0;    Cn.q2 = 0;
+    Cn.rcp1 = 0;  Cn.rcp2 = 0;
+    Cn.m1 = 0;    Cn.m2 = 0;
+    float C1;     float C2;
+    
     struct Coeffs coeff;
     struct Nash result;
     double R;
