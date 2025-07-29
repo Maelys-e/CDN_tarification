@@ -223,11 +223,19 @@ int main()
   struct ToTrace results;
   
   float Rmax = 0; float pmax = 0; float gmax = 0; double Rc1max = 0; double Rc2max = 0; float pc1max = 0; float pc2max = 0; float M1max = 0; float M2max = 0; float C1max = 0; float C2max = 0; float Q1max = 0; float Q2max = 0;
+
+  #define lissage 61
+  // nombre de point de chaque courbe
+  #define xmin 10.0
+  // valeur minimale de la fenêtre de résultats
+  #define delta_x 5
+  // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
+  float p[13][lissage]; // tableau qui rassemble les résultats
   
-  for (int i = 0; i < 61; i++)
+  for (int i = 0; i < lissage; i++)
   {
     
-    market.V = 10+5*i;
+    market.V = xmin + delta_x*i;    // à modifier pour changer la variable de référence
     
     Rmax = 0;
     pmax = 0;
@@ -250,9 +258,9 @@ int main()
     exit(1);
   }
   
-  for (int i = 0; i < (int)(61); i++)
+  for (int i = 0; i < (int)(lissage); i++)
   {
-    sprintf(str, "%f %f %f %f %f %f %f %f %f %f %f %f %f\n", 10.0+5*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i], p[7][i], p[8][i], p[9][i], p[10][i], p[11][i]);
+    sprintf(str, "%f %f %f %f %f %f %f %f %f %f %f %f %f\n", xmin + delta_x*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i], p[7][i], p[8][i], p[9][i], p[10][i], p[11][i]);
     fputs(str, f);
   }
   
