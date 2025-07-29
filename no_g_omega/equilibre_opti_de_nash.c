@@ -24,17 +24,13 @@ struct CDN
 
 double rcp(float pa, float pb, float Ci[], float Qfi[], struct Market market, struct CDN cdn, int i)
 {
-    float Qfa = Qfi[i];
-    float Qfb = Qfi[3-i];
-    float Ca = Ci[i];
-    float Cb = Ci[3-i];
     float bet = 1-market.alph;
-    float D = market.A*(pow(market.V, bet)/bet);
-    float Aa = pow(Ca/market.V, bet);
-    float Ab = pow(Cb/market.V, bet);
-    float Qa = cdn.Qc*Aa + Qfa*(1-Aa);
-    float Qb = cdn.Qc*Ab + Qfb*(1-Ab);
+    float Qfa = Qfi[i];                 float Qfb = Qfi[3-i];
+    float Ca = Ci[i];                   float Cb = Ci[3-i];
+    float Aa = pow(Ca/market.V, bet);   float Ab = pow(Cb/market.V, bet);
+    float Qa = cdn.Qc*Aa + Qfa*(1-Aa);  float Qb = cdn.Qc*Ab + Qfb*(1-Ab);
     float Ma;
+  
     if (pb != 0)
     {
         float Ba = (Qa/pow(pa, 2))+((Qa+Qb)*((1-market.omeg)/2)/pow(pa+pb, 2));
@@ -42,6 +38,8 @@ double rcp(float pa, float pb, float Ci[], float Qfi[], struct Market market, st
     }else{
         Ma = fmaxf((Qa/pa)/(1+(Qa/pow(pa, 2))), 0);
     }
+  
+    float D = market.A*(pow(market.V, bet)/bet);
     double rcpa = Ma * D * (1-(cdn.request_price/pa));
     return rcpa;
 }
@@ -58,6 +56,8 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
     float pk = 0;
     double Max = 0;
     float pmax = 0;
+
+    // TOUR 1
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((0.1 + k*0.1) * 10)/10;
@@ -68,7 +68,8 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
             Max = R;
         }
     }
-    //printf("tour2 - %d\n", i);
+  
+    // TOUR 2
     float start = pmax - (prixMax/10)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -80,7 +81,8 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
             Max = R;
         }
     }
-    //printf("tour3 - %d\n", i);
+  
+    // TOUR 3
     start = pmax - (prixMax/100)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -92,7 +94,8 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
             Max = R;
         }
     }
-    //printf("tour4 - %d\n", i);
+  
+    // TOUR 4
     start = pmax - (prixMax/1000)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -127,11 +130,13 @@ struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, 
     float p1_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     float p2 = 1;
     float p2_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+  
     struct CPtuple tab;
     float Ci[3] = {0, C1, C2};
     float Qfi[3] = {0, Q1, Q2};
     int n = 1;
     float S;
+  
     while (n)
     {
         for (int i = 19; i > 0; i--)
@@ -171,11 +176,13 @@ struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, 
           }
         }
     }
+  
     struct Nash values;
     values.rCP1 = rcp(p1, p2, Ci, Qfi, market, cdn, 1);
     values.rCP2 = rcp(p2, p1, Ci, Qfi, market, cdn, 2);
     float SR;
-    SR = 0; // seuil de rentabilité (optionnel, mettre à 0 si on ne s'en sert pas)
+    SR = 0; // seuil de rentabilité (0 si inutilisé)
+  
     if (p1 != 0 && values.rCP1 > SR) // si le CP1 n'est pas rentable
     {
         values.has_1 = true;
@@ -192,6 +199,7 @@ struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, 
         values.has_2 = false;
         values.value_2 = 0;
     }
+  
     return values;
 }
     
@@ -239,7 +247,7 @@ int main()
     }
   
     fclose(f);
-    system("python3 tracer_equilibres.py");
+    system("python3 tracer_courbes.py");
     
     return 0;
 }
