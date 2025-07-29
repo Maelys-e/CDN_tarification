@@ -28,24 +28,25 @@ float sCP(float C, float gamm)
 }
 
 double rcp(float pa, float pb, float Ci[], float Qfi[], struct Market market, struct CDN cdn, int i)
+/*
+Calcule et retourne le revenu du CPi
+*/
 {
-    float Qfa = Qfi[i];
-    float Qfb = Qfi[3-i];
-    float Ca = Ci[i];
-    float Cb = Ci[3-i];
     float bet = 1-market.alph;
-    float D = market.A*(pow(market.V, bet)/bet);
-    float Aa = pow(Ca/market.V, bet);
-    float Ab = pow(Cb/market.V, bet);
-    float Qa = cdn.Qc*Aa + Qfa*(1-Aa);
-    float Qb = cdn.Qc*Ab + Qfb*(1-Ab);
+    float Qfa = Qfi[i];                 float Qfb = Qfi[3-i];
+    float Ca = Ci[i];                   float Cb = Ci[3-i];
+    float Aa = pow(Ca/market.V, bet);   float Ab = pow(Cb/market.V, bet);
+    float Qa = cdn.Qc*Aa + Qfa*(1-Aa);  float Qb = cdn.Qc*Ab + Qfb*(1-Ab);
     float Ma;
+  
     if (pb != 0)
     {
         Ma = fmaxf((Qa/pa)/(1+(Qa/pow(pa, 2))+(Qb/pow(pb, 2))), 0);
     }else{
         Ma = fmaxf((Qa/pa)/(1+(Qa/pow(pa, 2))), 0);
     }
+    float D = market.A*(pow(market.V, bet)/bet);
+  
     double rcpa = Ma * D * (1-(cdn.request_price/pa)) - sCP(Ca, cdn.storage_price);
     return rcpa;
 }
@@ -57,11 +58,16 @@ struct CPtuple
 };
 
 struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, struct CDN cdn, int i) 
+/*
+Détermine le prix optimal du CP i en fonction du prix de l'autre CP
+*/
 {
     double R;
     float pk = 0;
     double Max = 0;
     float pmax = 0;
+
+    // TOUR 1
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((0.1 + k*0.1) * 10)/10;
@@ -72,36 +78,39 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
             Max = R;
         }
     }
+
+    // TOUR 2
     float start = pmax - (prixMax/10)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((start + k*0.01) * 100)/100;
         R = rcp(pk, p, Ci, Qfi, market, cdn, i);
-        //printf("REVENU : %f", R);
         if (R > Max)
         {
             pmax = pk;
             Max = R;
         }
     }
+
+    // TOUR 3
     start = pmax - (prixMax/100)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((start + k*0.001) * 1000)/1000;
         R = rcp(pk, p, Ci, Qfi, market, cdn, i);
-        //printf("REVENU : %f", R);
         if (R > Max)
         {
             pmax = pk;
             Max = R;
         }
     }
+
+    // TOUR 4
     start = pmax - (prixMax/1000)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((start + k*0.0001) * 10000)/10000;
         R = rcp(pk, p, Ci, Qfi, market, cdn, i);
-        //printf("REVENU : %f", R);
         if (R > Max)
         {
             pmax = pk;
@@ -117,25 +126,27 @@ struct CPtuple maxrcp(float p, float Ci[], float Qfi[], struct Market market, st
 
 struct Nash
 {
-  bool has_1;
-  float value_1;
-  double rCP1;
-  bool has_2;
-  float value_2;
-  double rCP2;
+  bool has_1;     bool has_2;
+  float value_1;  float value_2;
+  double rCP1;    double rCP2;
 };
     
 struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, struct CDN cdn)
+/*
+Recherche algorithmique de l'équilibre de Nash entre p1 et p2
+*/
 {
     float p1 = 1;
     float p1_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     float p2 = 1;
     float p2_before[20] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+  
     struct CPtuple tab;
     float Ci[3] = {0, C1, C2};
     float Qfi[3] = {0, Q1, Q2};
     int n = 1;
     float S;
+  
     while (n)
     {
         for (int i = 19; i > 0; i--)
@@ -147,38 +158,42 @@ struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, 
         {
           p1_before[i] = p1_before[i-1];
         }
+      
         p1_before[0] = p1;
         tab = maxrcp(p1, Ci, Qfi, market, cdn, 2);
         p2 = tab.pk;
         tab = maxrcp(p2, Ci, Qfi, market, cdn, 1);
         p1 = tab.pk;
         
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 20; j++)  // Recherche des boucles
         {
-          if (round(fmaxf(p1 - p1_before[j], p1_before[j]-p1)*1000)/1000 < 0.01 && round(fmaxf(p2 - p2_before[j], p2_before[j]-p2)*1000)/1000 < 0.01) // test au centième près
-          {
-            n = 0;
-            S = 0;
-            for (int k = 0; k < j+1; k++)
+            if (round(fmaxf(p1 - p1_before[j], p1_before[j]-p1)*1000)/1000 < 0.01 && round(fmaxf(p2 - p2_before[j], p2_before[j]-p2)*1000)/1000 < 0.01) // test au centième près
             {
-              S += p1_before[k];
+              n = 0;
+              S = 0;
+              
+              for (int k = 0; k < j+1; k++)
+              {
+                S += p1_before[k];
+              }
+              p1 = round((S/(j+1))*1000)/1000;
+              S = 0;
+              for (int k = 0; k < j+1; k++)
+              {
+                S += p2_before[k];
+              }
+              p2 = round((S/(j+1)) * 1000)/1000;
+              
+              break;
             }
-            p1 = round((S/(j+1))*1000)/1000;
-            S = 0;
-            for (int k = 0; k < j+1; k++)
-            {
-              S += p2_before[k];
-            }
-            p2 = round((S/(j+1)) * 1000)/1000;
-            break;
-          }
         }
+      
     }
+  
     struct Nash values;
-    values.rCP1 = rcp(p1, p2, Ci, Qfi, market, cdn, 1);
-    values.rCP2 = rcp(p2, p1, Ci, Qfi, market, cdn, 2);
-    float SR;
-    SR = 0; // seuil de rentabilité (optionnel, mettre à 0 si on ne s'en sert pas)
+    values.rCP1 = rcp(p1, p2, Ci, Qfi, market, cdn, 1);          values.rCP2 = rcp(p2, p1, Ci, Qfi, market, cdn, 2);
+    float SR = 0; // seuil de rentabilité d'un CP (finalement inutilisé)
+  
     if (p1 != 0 && values.rCP1 > SR) // si le CP1 n'est pas rentable
     {
         values.has_1 = true;
@@ -195,11 +210,13 @@ struct Nash nash2(float C1, float C2, float Q1, float Q2, struct Market market, 
         values.has_2 = false;
         values.value_2 = 0;
     }
+  
     return values;
 }
     
 /*
 int main()
+// Pour tracer les courbes de l'équilibre de Nash : p1 optimal en fonction de p2 et p2 optimal en fonction de p1
 {
     float Q1 = 1.2; // valeur arbitraire
     float Q2 = 1.5; // valeur arbitraire
@@ -237,16 +254,13 @@ int main()
       float pi = i*0.1;
       struct CPtuple tab1 = maxrcp(pi, Cis, Qfi, market, cdn, 1);
       struct CPtuple tab2 = maxrcp(pi, Cis, Qfi, market, cdn, 2);
-      //float pa = i*0.1;
-      //float pb = 12;
-      //float R = rcp(pa, pb, Cir, Qfi, market, cdn, 1);
-      //float S = rcp(pa, pb, Cis, Qfi, market, cdn, 1);
+      
       sprintf(str, "%f %f %f\n", pi, tab1.pk, tab2.pk);
       fputs(str, f);
     }
   
     fclose(f);
-    system("python3 tracer_equilibres.py");
+    system("python3 tracer_courbes.py");
     
     return 0;
 }
