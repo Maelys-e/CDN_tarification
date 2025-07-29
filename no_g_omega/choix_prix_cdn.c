@@ -234,8 +234,6 @@ int main()
   float Q1 = 20; // valeur arbitraire
   float Q2 = 40; // valeur arbitraire
 
-  float p[12][51];
-
   struct Market market;
   market.A = 5; // valeur arbitraire
   market.V = 200; // valeur arbitraire
@@ -263,10 +261,19 @@ int main()
   float C2max = 0;
   float Q1max = 0;
   float Q2max = 0;
+
   
-  for (int i = 0; i < 51; i++)
+  #define lissage 51
+  // nombre de point de chaque courbe
+  #define xmin 0
+  // valeur minimale de la fenêtre de résultats
+  #define delta_x 0.02
+  // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
+  float p[13][lissage]; // tableau qui rassemble les résultats
+  
+  for (int i = 0; i < lissage; i++)
   {
-    market.omeg = 0+0.02*i;
+    market.omeg = xmin + delta_x*i;
     Rmax = 0;
     pmax = 0;
     gmax = 0;
@@ -301,7 +308,7 @@ int main()
   
   for (int i = 0; i < (int)(51); i++)
   {
-    sprintf(str, "%f %f %f %f %f %f %f %f %f %f %f %f %f\n", 0.5+0.01*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i], p[7][i], p[8][i], p[9][i], p[10][i], p[11][i]);
+    sprintf(str, "%f %f %f %f %f %f %f %f %f %f %f %f %f\n", xmin + delta_x*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i], p[7][i], p[8][i], p[9][i], p[10][i], p[11][i]);
     fputs(str, f);
   }
   
