@@ -37,17 +37,20 @@ struct CPrev rcp(float pa, float Ci, float Qfi, struct Market market, struct CDN
     float Aa = pow(Ca/market.V, bet);
     float Qa = cdn.Qc*Aa + Qfa*(1-Aa);
     float Ma;
+  
     if (pa != 0)
     {
         Ma = fmaxf((Qa/pa)/(1+(Qa/pow(pa, 2))), 0);
     }else{
         Ma = 0;
     }
+  
     double rcpa = Ma * D * (1-(cdn.request_price/pa));
     struct CPrev result;
     result.rCP = rcpa;
     result.M = Ma;
     result.Q = Qa;
+  
     return result;
 }
 
@@ -70,7 +73,8 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
     float qmax = 0;
     int coeff = 0;
     struct CPrev rev;
-    
+
+    // TOUR 1
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
         pk = round((0.1 + k*0.1) * 10)/10;
@@ -84,7 +88,8 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
             qmax = rev.Q;
         }
     }
-    
+
+    // TOUR 2
     float start = pmax - (prixMax/10)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -99,7 +104,8 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
             qmax = rev.Q;
         }
     }
-    
+  
+    // TOUR 3
     start = pmax - (prixMax/100)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -114,7 +120,8 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
             qmax = rev.Q;
         }
     }
-    
+
+    // TOUR 4
     start = pmax - (prixMax/1000)/2;
     for (int k = 0; k < (int)(prixMax * 10); k++)
     {
@@ -142,16 +149,6 @@ struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct
     tab.q1 = qmax;
     return(tab);
 }
-
-struct Nash
-{
-  bool has_1;
-  float value_1;
-  double rCP1;
-  bool has_2;
-  float value_2;
-  double rCP2;
-};
   
     
 /*
@@ -198,7 +195,7 @@ int main()
     }
   
     fclose(f);
-    system("python3 tracer_equilibres.py");
+    system("python3 tracer_courbes.py");
     
     return 0;
 }
