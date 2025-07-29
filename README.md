@@ -33,4 +33,4 @@ Actuellement, lancer une simulation tracera toutes les courbes de sortie en fonc
 \
 Pour tracer les résultats en fonction d'une autre variable ou pour un autre plage de valeurs, il faut modifier les premières lignes de la fonction `main` de *choix_prix_cdn.c*.
 
-Les explications détaillées du fonctionnement du code se trouvent dans les fichiers du dossier *with_g*. Toutes les versions ont le même fonctionnement : ce sont seulement les équations, les valeurs et les structures qui changent.
+Les explications détaillées du fonctionnement du code se trouvent dans les fichiers du dossier *with_g*. Toutes les versions ont le même fonctionnement : ce sont seulement les équations, les valeurs et les structures qui changent (sauf pour le cas de *no_g_1_CP*, où tout l'équilibre de Nash est supprimé).
