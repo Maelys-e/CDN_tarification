@@ -23,6 +23,9 @@ struct CDN
 };
 
 float sCP(float C, float gamm) 
+/*
+Calcul du coût de stockage des contenus dans le CDN
+*/
 {
     return gamm * C;
 }
