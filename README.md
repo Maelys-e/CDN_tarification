@@ -30,5 +30,7 @@ Les trois derniers dossiers contiennent le code utilisé dans l'article.
 ## Modifier une simulation
 
 Actuellement, lancer une simulation tracera toutes les courbes de sortie en fonction de __V__, le volume total de contenus pour lesquels il y a de la demande, entre __V = 10__ et __V = 300__.
-
+\
 Pour tracer les résultats en fonction d'une autre variable ou pour un autre plage de valeurs, il faut modifier les premières lignes de la fonction `main` de *choix_prix_cdn.c*.
+
+Les explications détaillées du fonctionnement du code se trouvent dans les fichiers du dossier *with_g*. Toutes les versions ont le même fonctionnement : ce sont seulement les équations, les valeurs et les structures qui changent.
