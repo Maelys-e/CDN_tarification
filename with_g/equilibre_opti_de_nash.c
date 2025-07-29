@@ -192,7 +192,7 @@ Recherche algorithmique de l'équilibre de Nash entre p1 et p2
   
     struct Nash values;
     values.rCP1 = rcp(p1, p2, Ci, Qfi, market, cdn, 1);          values.rCP2 = rcp(p2, p1, Ci, Qfi, market, cdn, 2);
-    float SR = 0; // seuil de rentabilité d'un CP (finalement inutilisé)
+    float SR; SR = 0; // seuil de rentabilité d'un CP (finalement inutilisé)
   
     if (p1 != 0 && values.rCP1 > SR) // si le CP1 n'est pas rentable
     {
