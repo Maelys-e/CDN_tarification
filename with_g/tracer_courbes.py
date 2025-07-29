@@ -6,31 +6,23 @@ import tikzplotlib
 import time
 import datetime
 
-vert4 = "#88CC22"
-vert5 = "#77DD44"
-vert6 = "#66DD66"
-vert7 = "#55EE88"
-vert8 = "#44EEAA"
-vert9 = "#33EEAA"
-vert10 = "#22DDAA"
-vert11 = "#11BB88"
-vert12 = "#009966"
-vert13 = "#007744"
-
 
 if __name__ == "__main__" :
 
     if len(sys.argv) != 2 :
         print("il faut un parametre en ligne de commande : le nom de l'instance")
         sys.exit()
+
+    # on récupère les résultats de simulation dans data.txt
     nomFic = sys.argv[1]
     if not os.path.exists(nomFic) :
         print("ERREUR Ouverture fichier " + nomFic)
         sys.exit()
     M = np.loadtxt(nomFic)
     N = M.T
-    
-    a = N[0]
+
+    # on sépare chaque variable dans une liste
+    V = N[0]
     R = N[1]
     p = N[2]
     g = N[3]
@@ -45,32 +37,37 @@ if __name__ == "__main__" :
     q1 = N[12]
     q2 = N[13]
     
-
+    # on récupère l'heure et la date pour nommer le fichier final
     plt.style.use("ggplot")
     timenow = datetime.datetime.utcnow().replace(microsecond = 0).isoformat()
     output_dir = "results"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    
-    plt.plot(a, R, label = "RCDN")
-    plt.plot(a, r1, label = "R1")
-    plt.plot(a, r2, label = "R2")
-    plt.plot(a, g, label = "gCDN")
-    plt.plot(a, p, label = "pCDN")
-    plt.plot(a, p1, label = "p1")
-    plt.plot(a, p2, label = "p2")
-    plt.plot(a, C1, label = "C1")
-    plt.plot(a, C2, label = "C2")
-    plt.plot(a, m1, label = "M1")
-    plt.plot(a, m2, label = "M2")
-    plt.plot(a, q1, label = "Q1")
-    plt.plot(a, q2, label = "Q2")
+
+    # on trace les courbes et on met en forme le graphe
+    plt.plot(V, R, label = "RCDN")
+    plt.plot(V, r1, label = "R1")
+    plt.plot(V, r2, label = "R2")
+    plt.plot(V, g, label = "gCDN")
+    plt.plot(V, p, label = "pCDN")
+    plt.plot(V, p1, label = "p1")
+    plt.plot(V, p2, label = "p2")
+    plt.plot(V, C1, label = "C1")
+    plt.plot(V, C2, label = "C2")
+    plt.plot(V, m1, label = "M1")
+    plt.plot(V, m2, label = "M2")
+    plt.plot(V, q1, label = "Q1")
+    plt.plot(V, q2, label = "Q2")
     plt.legend(loc = 1)
+    # à partir d'ici, lignes à modifier pour changer de variable de référence
     plt.title("Résultats en fonction de V", fontdict={'family': 'serif'})
     plt.xlabel("V")
     plt.ylabel("RCDN")
+    # lignes à changer pour déplacer la fenêtre de simulation
     plt.ylim(-10, 100)
     plt.xlim(0.5, 1)
+
+    # on enregistre le graphe au formet .tex
     output_file = os.path.join(output_dir, f"vanilla_all_V_{timenow}.tex")
     tikzplotlib.save(output_file)
     plt.show()
