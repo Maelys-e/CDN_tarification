@@ -37,10 +37,12 @@ struct ToTrace choix_prix(struct Market market, struct CDN cdn, float Q1, float 
     all.Vn.p1 = 0;
     all.Vn.r1 = 0;
     double Rmax = 0;
+  
     int coeff;
     struct CN Cn;
     double R;
     struct Revenu revenu;
+  
     for (int i = 0; i < scope*precision; i++)
     {
         coeff = 1;
@@ -71,6 +73,7 @@ struct ToTrace choix_prix(struct Market market, struct CDN cdn, float Q1, float 
         all.p1n[i] = Cn.p1;
         all.r1n[i] = Cn.rcp1;
     }
+  
     return all;
 }
 
@@ -82,6 +85,7 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
     all.Vn.c1 = 0;
     all.Vn.p1 = 0;
     double Rmax = 0;
+  
     int coeff;
     struct CN Cn;
     double R;
@@ -95,6 +99,7 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         //printf("NEW PRICE %f - A = %f - g = %f\n", p, market.alph, cdn.storage_price);
         cdn.request_price = p;
         Cn = choix2(market, cdn, Q1, qc, qf);
+      
         if (!Cn.has_1)
         {
             coeff = 0;
@@ -123,6 +128,7 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         //printf("NEW PRICE %f - A = %f - g = %f\n", p, market.alph, cdn.storage_price);
         cdn.request_price = p;
         Cn = choix2(market, cdn, Q1, qc, qf);
+      
         if (!Cn.has_1)
         {
             coeff = 0;
@@ -151,6 +157,7 @@ struct ToTrace choix_prix_opti(struct Market market, struct CDN cdn, float Q1, f
         //printf("NEW PRICE %f - A = %f - g = %f\n", p, market.alph, cdn.storage_price);
         cdn.request_price = p;
         Cn = choix2(market, cdn, Q1, qc, qf);
+      
         if (!Cn.has_1)
         {
             coeff = 0;
@@ -200,10 +207,19 @@ int main()
   float M1max = 0;
   float C1max = 0;
   float Q1max = 0;
+
   
-  for (int i = 0; i < 60; i++)
+  #define lissage 61
+  // nombre de point de chaque courbe
+  #define xmin 10.0
+  // valeur minimale de la fenêtre de résultats
+  #define delta_x 5
+  // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
+  float p[13][lissage]; // tableau qui rassemble les résultats
+  
+  for (int i = 0; i < lissage; i++)
   {
-    market.V = 10.0+5*i;
+    market.V = xmin + delta_x*i;
     Rmax = 0;
     pmax = 0;
     gmax = 0;
@@ -231,9 +247,9 @@ int main()
     exit(1);
   }
   
-  for (int i = 0; i < (int)(60); i++)
+  for (int i = 0; i < (int)(lissage); i++)
   {
-    sprintf(str, "%f %f %f %f %f %f %f %f\n", 10.0+5*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i]);
+    sprintf(str, "%f %f %f %f %f %f %f %f\n", xmin + delta_x*i, p[0][i], p[1][i], p[2][i], p[3][i], p[4][i], p[5][i], p[6][i]);
     fputs(str, f);
   }
   
