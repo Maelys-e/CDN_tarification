@@ -184,8 +184,6 @@ int main()
 {
   float Q1 = 20; // valeur arbitraire
 
-  float p[7][60];
-
   struct Market market;
   market.A = 5; // valeur arbitraire
   market.V = 200; // valeur arbitraire
@@ -215,7 +213,7 @@ int main()
   // valeur minimale de la fenêtre de résultats
   #define delta_x 5
   // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
-  float p[13][lissage]; // tableau qui rassemble les résultats
+  float p[7][lissage]; // tableau qui rassemble les résultats
   
   for (int i = 0; i < lissage; i++)
   {
