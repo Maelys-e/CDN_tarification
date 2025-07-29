@@ -6,11 +6,6 @@
 #include "equilibre_opti_de_nash.h"
 
 
-float sCDN(float storage_cost, float capacity)
-{
-    return storage_cost * capacity;
-}
-
 struct Revenu
 {
   double rev;
@@ -28,6 +23,7 @@ struct Revenu rcdn(float C1, float Qf1, struct Market market, struct CDN cdn, fl
     float A1 = pow(C1/market.V, bet);
     float Q1 = cdn.Qc*A1 + Qf1*(1-A1);
     float M1;
+    
     if (coeff != 0)
     {
         M1 = fmaxf((Q1/pow(p1,2))/(1+(Q1/pow(p1,2))), 0);
@@ -65,6 +61,7 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
     Cn.m1 = 0;
     Cn.q1 = 0;
     Cn.rcp1 = 0;
+    
     float C1;
     int coeff;
     struct CPtuple result;
@@ -78,6 +75,7 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
         C1 = ii*0.1;
         coeff = 0;
         result = maxrcp(cdn.request_price, C1, Q1, market, cdn);
+        
         if (result.has_1)
         {
             coeff = 1;
@@ -107,12 +105,14 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
         C1 = start + ii*0.01;
         coeff = 0;
         result = maxrcp(cdn.request_price, C1, Q1, market, cdn);
+        
         if (result.has_1)
         {
             coeff = 1;
         }else{
             coeff = 0;
         }
+        
         revenu = rcdn(C1, Q1, market, cdn, result.pk, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
@@ -134,12 +134,14 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
         C1 = start + ii*0.001;
         coeff = 0;
         result = maxrcp(cdn.request_price, C1, Q1, market, cdn);
+        
         if (result.has_1)
         {
             coeff = 1;
         }else{
             coeff = 0;
         }
+        
         revenu = rcdn(C1, Q1, market, cdn, result.pk, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
