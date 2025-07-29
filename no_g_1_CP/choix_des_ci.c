@@ -159,7 +159,7 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float qc, float
     return Cn;
 }
 
-
+/*
 int main()
 {
     float Q1 = 20; // valeur arbitraire
@@ -224,5 +224,5 @@ int main()
     
     return 0;
 }
-
+*/
 
