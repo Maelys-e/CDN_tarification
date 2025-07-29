@@ -8,11 +8,11 @@ struct AllPrices
 {
   float p;
   float r;
-  float c1; float c2;
-  float p1; float p2;
+  float c1;  float c2;
+  float p1;  float p2;
   double r1; double r2;
-  float m1; float m2;
-  float q1; float q2;
+  float m1;  float m2;
+  float q1;  float q2;
 };
 
 #define scope 5
@@ -37,9 +37,9 @@ Renvoie une structure ToTrace contenant toutes les valeurs de toutes les variabl
     struct ToTrace all;
     all.Vn.p = 0;
     all.Vn.r = 0;
-    all.Vn.c1 = 0; all.Vn.c2 = 0;
-    all.Vn.p1 = 0; all.Vn.p2 = 0;
-    all.Vn.r1 = 0; all.Vn.r2 = 0;
+    all.Vn.c1 = 0;  all.Vn.c2 = 0;
+    all.Vn.p1 = 0;  all.Vn.p2 = 0;
+    all.Vn.r1 = 0;  all.Vn.r2 = 0;
     double Rmax = 0;
     struct Coeffs coeff;
     struct CN Cn;
@@ -70,18 +70,18 @@ Renvoie une structure ToTrace contenant toutes les valeurs de toutes les variabl
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
-            all.Vn.c1 = Cn.c1; all.Vn.c2 = Cn.c2;
-            all.Vn.p1 = Cn.p1; all.Vn.p2 = Cn.p2;
-            all.Vn.r1 = Cn.rcp1; all.Vn.r2 = Cn.rcp2;
-            all.Vn.m1 = Cn.m1; all.Vn.m2 = Cn.m2;
-            all.Vn.q1 = Cn.q1; all.Vn.q2 = Cn.q2;
+            all.Vn.c1 = Cn.c1;    all.Vn.c2 = Cn.c2;
+            all.Vn.p1 = Cn.p1;    all.Vn.p2 = Cn.p2;
+            all.Vn.r1 = Cn.rcp1;  all.Vn.r2 = Cn.rcp2;
+            all.Vn.m1 = Cn.m1;    all.Vn.m2 = Cn.m2;
+            all.Vn.q1 = Cn.q1;    all.Vn.q2 = Cn.q2;
         }
         // dans tous les cas, enregistre les résultats dans des tableaux
         all.pn[i] = p;
         all.Rn[i] = R;
-        all.c1n[i] = Cn.c1; all.c2n[i] = Cn.c2;
-        all.p1n[i] = Cn.p1; all.p2n[i] = Cn.p2;
-        all.r1n[i] = Cn.rcp1; all.r2n[i] = Cn.rcp2;
+        all.c1n[i] = Cn.c1;    all.c2n[i] = Cn.c2;
+        all.p1n[i] = Cn.p1;    all.p2n[i] = Cn.p2;
+        all.r1n[i] = Cn.rcp1;  all.r2n[i] = Cn.rcp2;
     }
     return all;
 }
@@ -96,8 +96,8 @@ Les boucles de parcours de la plage des prix sont optimisées pour améliorer la
     struct ToTrace all;
     all.Vn.p = 0;
     all.Vn.r = 0;
-    all.Vn.c1 = 0; all.Vn.c2 = 0;
-    all.Vn.p1 = 0; all.Vn.p2 = 0;
+    all.Vn.c1 = 0;  all.Vn.c2 = 0;
+    all.Vn.p1 = 0;  all.Vn.p2 = 0;
     double Rmax = 0;
     struct Coeffs coeff;
     struct CN Cn;
@@ -130,11 +130,11 @@ Les boucles de parcours de la plage des prix sont optimisées pour améliorer la
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
-            all.Vn.c1 = Cn.c1; all.Vn.c2 = Cn.c2;
-            all.Vn.p1 = Cn.p1; all.Vn.p2 = Cn.p2;
-            all.Vn.r1 = Cn.rcp1; all.Vn.r2 = Cn.rcp2;
-            all.Vn.m1 = Cn.m1; all.Vn.m2 = Cn.m2;
-            all.Vn.q1 = Cn.q1; all.Vn.q2 = Cn.q2;
+            all.Vn.c1 = Cn.c1;    all.Vn.c2 = Cn.c2;
+            all.Vn.p1 = Cn.p1;    all.Vn.p2 = Cn.p2;
+            all.Vn.r1 = Cn.rcp1;  all.Vn.r2 = Cn.rcp2;
+            all.Vn.m1 = Cn.m1;    all.Vn.m2 = Cn.m2;
+            all.Vn.q1 = Cn.q1;    all.Vn.q2 = Cn.q2;
         }
     }
     
@@ -165,11 +165,11 @@ Les boucles de parcours de la plage des prix sont optimisées pour améliorer la
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
-            all.Vn.c1 = Cn.c1; all.Vn.c2 = Cn.c2;
-            all.Vn.p1 = Cn.p1; all.Vn.p2 = Cn.p2;
-            all.Vn.r1 = Cn.rcp1; all.Vn.r2 = Cn.rcp2;
-            all.Vn.m1 = Cn.m1; all.Vn.m2 = Cn.m2;
-            all.Vn.q1 = Cn.q1; all.Vn.q2 = Cn.q2;
+            all.Vn.c1 = Cn.c1;    all.Vn.c2 = Cn.c2;
+            all.Vn.p1 = Cn.p1;    all.Vn.p2 = Cn.p2;
+            all.Vn.r1 = Cn.rcp1;  all.Vn.r2 = Cn.rcp2;
+            all.Vn.m1 = Cn.m1;    all.Vn.m2 = Cn.m2;
+            all.Vn.q1 = Cn.q1;    all.Vn.q2 = Cn.q2;
         }
     }
     
@@ -200,11 +200,11 @@ Les boucles de parcours de la plage des prix sont optimisées pour améliorer la
             Rmax = R;
             all.Vn.p = p;
             all.Vn.r = Rmax;
-            all.Vn.c1 = Cn.c1;all.Vn.c2 = Cn.c2;
-            all.Vn.p1 = Cn.p1;all.Vn.p2 = Cn.p2;
-            all.Vn.r1 = Cn.rcp1;all.Vn.r2 = Cn.rcp2;
-            all.Vn.m1 = Cn.m1;all.Vn.m2 = Cn.m2;
-            all.Vn.q1 = Cn.q1;all.Vn.q2 = Cn.q2;
+            all.Vn.c1 = Cn.c1;    all.Vn.c2 = Cn.c2;
+            all.Vn.p1 = Cn.p1;    all.Vn.p2 = Cn.p2;
+            all.Vn.r1 = Cn.rcp1;  all.Vn.r2 = Cn.rcp2;
+            all.Vn.m1 = Cn.m1;    all.Vn.m2 = Cn.m2;
+            all.Vn.q1 = Cn.q1;    all.Vn.q2 = Cn.q2;
         }
     }
     
@@ -262,11 +262,11 @@ int main()
         gmax = cdn.storage_price;
         pmax = results.Vn.p;
         Rmax = results.Vn.r;
-        pc1max = results.Vn.p1; pc2max = results.Vn.p2;
-        Rc1max = results.Vn.r1; Rc2max = results.Vn.r2;
-        M1max = results.Vn.m1; M2max = results.Vn.m2;
-        C1max = results.Vn.c1; C2max = results.Vn.c2;
-        Q1max = results.Vn.q1; Q2max = results.Vn.q2;
+        pc1max = results.Vn.p1;  pc2max = results.Vn.p2;
+        Rc1max = results.Vn.r1;  Rc2max = results.Vn.r2;
+        M1max = results.Vn.m1;   M2max = results.Vn.m2;
+        C1max = results.Vn.c1;   C2max = results.Vn.c2;
+        Q1max = results.Vn.q1;   Q2max = results.Vn.q2;
       }
     }
     
@@ -283,11 +283,11 @@ int main()
         gmax = cdn.storage_price;
         pmax = results.Vn.p;
         Rmax = results.Vn.r;
-        pc1max = results.Vn.p1; pc2max = results.Vn.p2;
-        Rc1max = results.Vn.r1; Rc2max = results.Vn.r2;
-        M1max = results.Vn.m1; M2max = results.Vn.m2;
-        C1max = results.Vn.c1; C2max = results.Vn.c2;
-        Q1max = results.Vn.q1; Q2max = results.Vn.q2;
+        pc1max = results.Vn.p1;  pc2max = results.Vn.p2;
+        Rc1max = results.Vn.r1;  Rc2max = results.Vn.r2;
+        M1max = results.Vn.m1;   M2max = results.Vn.m2;
+        C1max = results.Vn.c1;   C2max = results.Vn.c2;
+        Q1max = results.Vn.q1;   Q2max = results.Vn.q2;
       }
     }
     
@@ -304,11 +304,11 @@ int main()
         gmax = cdn.storage_price;
         pmax = results.Vn.p;
         Rmax = results.Vn.r;
-        pc1max = results.Vn.p1; pc2max = results.Vn.p2;
-        Rc1max = results.Vn.r1; Rc2max = results.Vn.r2;
-        M1max = results.Vn.m1; M2max = results.Vn.m2;
-        C1max = results.Vn.c1; C2max = results.Vn.c2;
-        Q1max = results.Vn.q1; Q2max = results.Vn.q2;
+        pc1max = results.Vn.p1;  pc2max = results.Vn.p2;
+        Rc1max = results.Vn.r1;  Rc2max = results.Vn.r2;
+        M1max = results.Vn.m1;   M2max = results.Vn.m2;
+        C1max = results.Vn.c1;   C2max = results.Vn.c2;
+        Q1max = results.Vn.q1;   Q2max = results.Vn.q2;
       }
     }
     
