@@ -1,11 +1,3 @@
-struct Nash;
-struct Nash
-{
-  bool has_1;
-  float value_1;
-  double rCP1;
-};
-
 struct Market;
 struct Market
 {
@@ -41,5 +33,3 @@ struct CPtuple
 };
 
 struct CPtuple maxrcp(float p, float Ci, float Qfi, struct Market market, struct CDN cdn);
-  
-struct Nash nash2(float C1, float Q1, struct Market market, struct CDN cdn);
