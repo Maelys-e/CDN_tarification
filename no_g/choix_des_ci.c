@@ -6,11 +6,6 @@
 #include "equilibre_opti_de_nash.h"
 
 
-float sCDN(float storage_cost, float capacity)
-{
-    return storage_cost * capacity;
-}
-
 struct Coeffs
 {
   int coeff_1;
@@ -33,6 +28,7 @@ struct Revenu rcdn(float C1, float C2, float Qf1, float Qf2, struct Market marke
     float A1 = pow(C1/market.V, bet);   float A2 = pow(C2/market.V, bet);
     float Q1 = cdn.Qc*A1 + Qf1*(1-A1);  float Q2 = cdn.Qc*A2 + Qf2*(1-A2);
     float M1;                           float M2;
+    
     if (coeff.coeff_1 != 0)
     {
         if (coeff.coeff_2 != 0)
@@ -102,9 +98,9 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     {
         C1 = ii*0.1;
         C2 = cdn.C - C1;
-        coeff.coeff_1 = 0;
-        coeff.coeff_2 = 0;
+        coeff.coeff_1 = 0;  coeff.coeff_2 = 0;
         result = nash2(C1, C2, Q1, Q2, market, cdn);
+        
         if (result.has_1)
         {
             coeff.coeff_1 = 1;
@@ -117,23 +113,18 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
         }else{
             coeff.coeff_2 = 0;
         }
+        
         revenu = rcdn(C1, C2, Q1, Q2, market, cdn, result.value_1, result.value_2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
             Rmax = R;
-            Cn.has_1 = result.has_1;
-            Cn.c1 = C1;
-            Cn.p1 = result.value_1;
-            Cn.rcp1 = result.rCP1;
-            Cn.has_2 = result.has_2;
-            Cn.c2 = C2;
-            Cn.p2 = result.value_2;
-            Cn.rcp2 = result.rCP2;
-            Cn.m1 = revenu.m1;
-            Cn.m2 = revenu.m2;
-            Cn.q1 = revenu.q1;
-            Cn.q2 = revenu.q2;
+            Cn.has_1 = result.has_1;  Cn.has_2 = result.has_2;
+            Cn.c1 = C1;               Cn.c2 = C2;
+            Cn.p1 = result.value_1;   Cn.p2 = result.value_2;
+            Cn.rcp1 = result.rCP1;    Cn.rcp2 = result.rCP2;
+            Cn.m1 = revenu.m1;        Cn.m2 = revenu.m2;
+            Cn.q1 = revenu.q1;        Cn.q2 = revenu.q2;
         }
       
     }
@@ -144,9 +135,9 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     {
         C1 = start + ii*0.01;
         C2 = cdn.C - C1;
-        coeff.coeff_1 = 0;
-        coeff.coeff_2 = 0;
+        coeff.coeff_1 = 0;  coeff.coeff_2 = 0;
         result = nash2(C1, C2, Q1, Q2, market, cdn);
+        
         if (result.has_1)
         {
             coeff.coeff_1 = 1;
@@ -159,23 +150,18 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
         }else{
             coeff.coeff_2 = 0;
         }
+        
         revenu = rcdn(C1, C2, Q1, Q2, market, cdn, result.value_1, result.value_2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
             Rmax = R;
-            Cn.has_1 = result.has_1;
-            Cn.c1 = C1;
-            Cn.p1 = result.value_1;
-            Cn.rcp1 = result.rCP1;
-            Cn.has_2 = result.has_2;
-            Cn.c2 = C2;
-            Cn.p2 = result.value_2;
-            Cn.rcp2 = result.rCP2;
-            Cn.m1 = revenu.m1;
-            Cn.m2 = revenu.m2;
-            Cn.q1 = revenu.q1;
-            Cn.q2 = revenu.q2;
+            Cn.has_1 = result.has_1;  Cn.has_2 = result.has_2;
+            Cn.c1 = C1;               Cn.c2 = C2;
+            Cn.p1 = result.value_1;   Cn.p2 = result.value_2;
+            Cn.rcp1 = result.rCP1;    Cn.rcp2 = result.rCP2;
+            Cn.m1 = revenu.m1;        Cn.m2 = revenu.m2;
+            Cn.q1 = revenu.q1;        Cn.q2 = revenu.q2;
         }
     }
     
@@ -185,9 +171,9 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
     {
         C1 = start + ii*0.001;
         C2 = cdn.C - C1;
-        coeff.coeff_1 = 0;
-        coeff.coeff_2 = 0;
+        coeff.coeff_1 = 0;  coeff.coeff_2 = 0;
         result = nash2(C1, C2, Q1, Q2, market, cdn);
+        
         if (result.has_1)
         {
             coeff.coeff_1 = 1;
@@ -200,23 +186,18 @@ struct CN choix2(struct Market market, struct CDN cdn, float Q1, float Q2, float
         }else{
             coeff.coeff_2 = 0;
         }
+        
         revenu = rcdn(C1, C2, Q1, Q2, market, cdn, result.value_1, result.value_2, coeff, qc, qf);
         R = revenu.rev;
         if (R > Rmax)
         {
             Rmax = R;
-            Cn.has_1 = result.has_1;
-            Cn.c1 = C1;
-            Cn.p1 = result.value_1;
-            Cn.rcp1 = result.rCP1;
-            Cn.has_2 = result.has_2;
-            Cn.c2 = C2;
-            Cn.p2 = result.value_2;
-            Cn.rcp2 = result.rCP2;
-            Cn.m1 = revenu.m1;
-            Cn.m2 = revenu.m2;
-            Cn.q1 = revenu.q1;
-            Cn.q2 = revenu.q2;
+            Cn.has_1 = result.has_1;  Cn.has_2 = result.has_2;
+            Cn.c1 = C1;               Cn.c2 = C2;
+            Cn.p1 = result.value_1;   Cn.p2 = result.value_2;
+            Cn.rcp1 = result.rCP1;    Cn.rcp2 = result.rCP2;
+            Cn.m1 = revenu.m1;        Cn.m2 = revenu.m2;
+            Cn.q1 = revenu.q1;        Cn.q2 = revenu.q2;
         }
     }
     
