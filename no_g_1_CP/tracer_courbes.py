@@ -6,17 +6,6 @@ import tikzplotlib
 import time
 import datetime
 
-vert4 = "#88CC22"
-vert5 = "#77DD44"
-vert6 = "#66DD66"
-vert7 = "#55EE88"
-vert8 = "#44EEAA"
-vert9 = "#33EEAA"
-vert10 = "#22DDAA"
-vert11 = "#11BB88"
-vert12 = "#009966"
-vert13 = "#007744"
-
 
 if __name__ == "__main__" :
 
