@@ -7,6 +7,9 @@
 
 
 float sCDN(float storage_cost, float capacity)
+/*
+Calcul du coût du stockage des contenus des CPs
+*/
 {
     return storage_cost * capacity;
 }
