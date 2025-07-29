@@ -6,17 +6,6 @@ import tikzplotlib
 import time
 import datetime
 
-vert4 = "#88CC22"
-vert5 = "#77DD44"
-vert6 = "#66DD66"
-vert7 = "#55EE88"
-vert8 = "#44EEAA"
-vert9 = "#33EEAA"
-vert10 = "#22DDAA"
-vert11 = "#11BB88"
-vert12 = "#009966"
-vert13 = "#007744"
-
 
 if __name__ == "__main__" :
 
@@ -68,6 +57,7 @@ if __name__ == "__main__" :
     plt.ylabel("RCDN")
     plt.ylim(-2, 200)
     plt.xlim(0, 1)
+    
     output_file = os.path.join(output_dir, f"het_cdn2_big-Q_all_omega_no-g_{timenow}.tex")
     tikzplotlib.save(output_file)
     plt.show()
