@@ -19,14 +19,14 @@ if __name__ == "__main__" :
     M = np.loadtxt(nomFic)
     N = M.T
     
-    a = N[0]
+    V = N[0]
     R = N[1]
-    r1 = N[2]
-    #r1 = N[3]
-    #p1 = N[4]
-    #m1 = N[5]
-    #c1 = N[6]
-    #q1 = N[7]
+    p1 = N[2]
+    r1 = N[3]
+    p1 = N[4]
+    m1 = N[5]
+    c1 = N[6]
+    q1 = N[7]
     
 
     plt.style.use("ggplot")
@@ -35,18 +35,19 @@ if __name__ == "__main__" :
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    plt.plot(a, R, label = "RCDN")
-    #plt.plot(a, p, label = "pCDN")
-    plt.plot(a, r1, label = "R")
-    #plt.plot(a, p1, label = "p")
-    #plt.plot(a, m1, label = "M")
-    #plt.plot(a, c1, label = "C")
-    #plt.plot(a, q1, label = "Q")
+    plt.plot(V, R, label = "RCDN")
+    plt.plot(V, p1, label = "pCDN")
+    plt.plot(V, r1, label = "R")
+    plt.plot(V, p1, label = "p")
+    plt.plot(V, m1, label = "M")
+    plt.plot(V, c1, label = "C")
+    plt.plot(V, q1, label = "Q")
     plt.legend(loc = 1)
-    plt.xlabel("C1")
+    plt.xlabel("V")
     plt.ylabel("RCDN")
-    plt.ylim(-2, 50)
-    plt.xlim(0, 3)
+    plt.ylim(-2, 100)
+    plt.xlim(10, 300)
+    
     output_file = os.path.join(output_dir, f"cdn1_big-Q_R_C1_no-g_{timenow}.tex")
     tikzplotlib.save(output_file)
     plt.show()
