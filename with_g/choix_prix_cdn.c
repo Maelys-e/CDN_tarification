@@ -232,9 +232,12 @@ int main()
   
   struct ToTrace results;
 
-  #define lissage 30    // nombre de point de chaque courbe
-  #define xmin 10.0     // valeur minimale de la fenêtre de résultats
-  #define delta_x 10    // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
+  #define lissage 30
+  // nombre de point de chaque courbe
+  #define xmin 10.0
+  // valeur minimale de la fenêtre de résultats
+  #define delta_x 10
+  // écart horizontal entre deux points (xmin + (lissage - 1) * deltax = xmax)
   float p[13][lissage]; // tableau qui rassemble les résultats
   
   float Rmax = 0; float pmax = 0; float gmax = 0; double Rc1max = 0; double Rc2max = 0; float pc1max = 0; float pc2max = 0; float M1max = 0; float M2max = 0; float C1max = 0; float C2max = 0; float Q1max = 0; float Q2max = 0;
