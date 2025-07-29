@@ -1,12 +1,9 @@
 struct Nash;
 struct Nash
 {
-  bool has_1;
-  float value_1;
-  double rCP1;
-  bool has_2;
-  float value_2;
-  double rCP2;
+  bool has_1;     bool has_2;
+  float value_1;  float value_2;
+  double rCP1;    double rCP2;
 };
 
 struct Market;
