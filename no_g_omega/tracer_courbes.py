@@ -19,7 +19,7 @@ if __name__ == "__main__" :
     M = np.loadtxt(nomFic)
     N = M.T
     
-    a = N[0]
+    w = N[0]
     R = N[1]
     p = N[2]
     r1 = N[3]
@@ -40,18 +40,18 @@ if __name__ == "__main__" :
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    plt.plot(a, R, label = "RCDN")
-    plt.plot(a, p, label = "pCDN")
-    plt.plot(a, r1, label = "R1")
-    plt.plot(a, p1, label = "p1")
-    plt.plot(a, r2, label = "R2")
-    plt.plot(a, p2, label = "p2")
-    plt.plot(a, m1, label = "M1")
-    plt.plot(a, m2, label = "M2")
-    plt.plot(a, c1, label = "C1")
-    plt.plot(a, c2, label = "C2")
-    plt.plot(a, q1, label = "Q1")
-    plt.plot(a, q2, label = "Q2")
+    plt.plot(w, R, label = "RCDN")
+    plt.plot(w, p, label = "pCDN")
+    plt.plot(w, r1, label = "R1")
+    plt.plot(w, p1, label = "p1")
+    plt.plot(w, r2, label = "R2")
+    plt.plot(w, p2, label = "p2")
+    plt.plot(w, m1, label = "M1")
+    plt.plot(w, m2, label = "M2")
+    plt.plot(w, c1, label = "C1")
+    plt.plot(w, c2, label = "C2")
+    plt.plot(w, q1, label = "Q1")
+    plt.plot(w, q2, label = "Q2")
     plt.legend(loc = 1)
     plt.xlabel("omega")
     plt.ylabel("RCDN")
